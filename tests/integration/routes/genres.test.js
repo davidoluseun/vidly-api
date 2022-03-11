@@ -9,6 +9,7 @@ describe("/api/genres", () => {
   beforeEach(() => {
     server = require("../../../index");
   });
+
   afterEach(async () => {
     await server.close();
     await Genre.deleteMany({});
@@ -210,13 +211,13 @@ describe("/api/genres", () => {
       expect(res.status).toBe(401);
     });
 
-    it("should return 403 if user is not an admin", async() => {
-      token = new User({isAdmin: false}).generateAuthToken();
+    it("should return 403 if user is not an admin", async () => {
+      token = new User({ isAdmin: false }).generateAuthToken();
 
       const res = await exec();
 
       expect(res.status).toBe(403);
-    })
+    });
 
     it("should return 404 if id is invalid", async () => {
       id = 1;

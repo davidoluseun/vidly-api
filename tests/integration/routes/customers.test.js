@@ -5,6 +5,7 @@ const request = require("supertest");
 
 describe("/api/customers", () => {
   let server;
+
   beforeEach(() => {
     server = require("../../../index");
   });

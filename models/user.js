@@ -38,4 +38,3 @@ function validateUser(user) {
 
 exports.User = User;
 exports.validator = validateUser;
-
