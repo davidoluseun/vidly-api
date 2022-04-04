@@ -1,4 +1,5 @@
 const request = require("supertest");
+const mongoose = require("mongoose");
 const { Rental } = require("../../../models/rental");
 const { Customer } = require("../../../models/customer");
 const { Movie } = require("../../../models/movie");
@@ -88,6 +89,58 @@ describe("/api/rentals", () => {
       expect(
         res.body.some((r) => r.customer.name === "customer1")
       ).toBeTruthy();
+    });
+  });
+
+  describe("GET /:id", () => {
+    it("should return 404 if id is invalid", async () => {
+      const res = await request(server).get("/api/rentals/1");
+
+      expect(res.status).toBe(404);
+    });
+
+    it("should return 404 if no rental with the given id exist", async () => {
+      const id = mongoose.Types.ObjectId();
+      
+      const res = await request(server).get("/api/rentals/" + id);
+
+      expect(res.status).toBe(404);
+    });
+
+    it("should return a rental if id is valid", async () => {
+      const genre = new Genre({ name: "genre" });
+      const movie = new Movie({
+        title: "movie",
+        genre: { _id: genre._id, name: genre.name },
+        numberInStock: 9,
+        dailyRentalRate: 2,
+      });
+
+      const customer = new Customer({ name: "customer", phone: "12345" });
+
+      const rental = new Rental({
+        customer: {
+          _id: customer._id,
+          name: customer.name,
+          phone: customer.phone,
+        },
+        movie: {
+          _id: movie._id,
+          title: movie.title,
+          dailyRentalRate: movie.dailyRentalRate,
+        },
+      });
+
+      await genre.save();
+      await movie.save();
+      await customer.save();
+      await rental.save();
+
+      const res = await request(server).get("/api/rentals/" + rental._id);
+
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty("movie.title", movie.title);
+      expect(res.body).toHaveProperty("customer.name", customer.name);
     });
   });
 });
