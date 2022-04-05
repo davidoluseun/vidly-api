@@ -1,6 +1,6 @@
 # Vidly API
 
-This project is my version of [vidly-api-node](https://github.com/mosh-hamedani/vidly-api-node/) by [mosh-hamedani](https://github.com/mosh-hamedani/).
+This project is my version of [vidly-api-node](https://github.com/mosh-hamedani/vidly-api-node/) by [mosh-hamedani](https://github.com/mosh-hamedani/). It is the backend of Vidly, an imaginary video rental app.
 
 ## Available Scripts
 
